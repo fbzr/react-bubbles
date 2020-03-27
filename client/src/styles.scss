@@ -18,6 +18,19 @@ body,
   svg {
     height: 100%;
   }
+
+  .login {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .error {
+      font-size: 12px;
+      color: red;
+    }
+  }
 }
 
 .spacer {

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./styles.scss";
 // components
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from "./components/Login";
+import BubblePage from './components/BubblePage';
 
 
 function App() {

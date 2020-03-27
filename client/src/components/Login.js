@@ -10,9 +10,11 @@ const Login = () => {
     username: '',
     password: ''
   });
+  const [error, setError] = useState('');
 
   const handleChange = e => {
     e.persist();
+    setError('');
     setUser(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -23,25 +25,24 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await login(user);
-      console.log(res);
       localStorage.setItem('token', res.data.payload);
       push('/bubbles');
     } catch(err) {
-      console.log(err);
+      setError('Invalid credentials');
     }
-    
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='login' onSubmit={handleSubmit}>
       <label htmlFor='username'>Username:</label>
       <input onChange={handleChange} name='username' id='username' type='text' />
 
       <label htmlFor='password'>Password:</label>
       <input onChange={handleChange} name='password' id='password' type='password' />
-
-      <button type='submit'>Log in</button>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {error && <p className='error'>{error}</p>}
+      <div className="button-row">
+          <button type='submit'>Login</button>
+      </div>
     </form>
   );
 };
