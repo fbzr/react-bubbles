@@ -1,13 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
+import { login } from '../crud/auth';
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
+  const { push } = useHistory();
+  const [user, setUser] = useState({
+    username: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+
+  const handleChange = e => {
+    e.persist();
+    setError('');
+    setUser(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const res = await login(user);
+      localStorage.setItem('token', res.data.payload);
+      push('/bubbles');
+    } catch(err) {
+      setError('Invalid credentials');
+    }
+  }
+
   return (
-    <>
-      <h1>Welcome to the Bubble App!</h1>
-      <p>Build a login page here</p>
-    </>
+    <form className='login' onSubmit={handleSubmit}>
+      <label htmlFor='username'>Username:</label>
+      <input onChange={handleChange} name='username' id='username' type='text' />
+
+      <label htmlFor='password'>Password:</label>
+      <input onChange={handleChange} name='password' id='password' type='password' />
+      {error && <p className='error'>{error}</p>}
+      <div className="button-row">
+          <button type='submit'>Login</button>
+      </div>
+    </form>
   );
 };
 
